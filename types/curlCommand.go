@@ -19,9 +19,9 @@ func (t *RequestType) GetCurlCommand() string {
 		command += " -H '" + key + ": " + value + "'"
 	}
 
-	if t.Data != nil {
-		if *t.Data != "" {
-			command += " -d '" + *t.Data + "'"
+	if t.Body != nil {
+		if *t.Body != "" {
+			command += " -d '" + *t.Body + "'"
 		}
 	}
 
