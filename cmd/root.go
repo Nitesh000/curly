@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"cobra-tut/utils"
+	"curly/utils"
 	"fmt"
 	"log"
 	"os"

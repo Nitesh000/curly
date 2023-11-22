@@ -1,6 +1,6 @@
 package main
 
-import "cobra-tut/cmd"
+import "curly/cmd"
 
 func main() {
 	cmd.Execute()

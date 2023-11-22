@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"cobra-tut/types"
+	"curly/types"
 	"encoding/json"
 	"io/ioutil"
 	"log"
