@@ -5,7 +5,10 @@ import "encoding/json"
 const (
 	CONFIGURE_FILE_PATH = "~/.curly"
 	CONFIGURE_FILE_NAME = "curly.json"
+	VERSION             = "0.0.1"
 )
+
+var AppConfigString string
 
 type RequestType struct {
 	Method  string            `json:"method"`
@@ -49,4 +52,8 @@ type RequestConfigurations struct {
 	NumConnects           bool `json:"num_connects"`
 	PrimaryIp6            bool `json:"primary_ip6"`
 	LocalIp6              bool `json:"local_ip6"`
+}
+
+type CurlyConfig struct {
+	AppConfig *RequestConfigurations
 }

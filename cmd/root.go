@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"curly/types"
 	"curly/utils"
 	"fmt"
 	"log"
@@ -11,7 +12,7 @@ import (
 )
 
 var (
-	Verbose      bool
+	Version      bool
 	Source       string
 	CreateSource string
 )
@@ -21,36 +22,34 @@ var rootCmd = &cobra.Command{
 	Short: "Curly is a CLI tool for making http requests",
 	Long: `A fast and flexible CLI tool for makeing http 
       requests with the help of curl.`,
-	Args: cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
+		if Version {
+			fmt.Println("Curly version: ", types.VERSION)
+			os.Exit(0)
+		}
 		if len(args) < 1 {
-			log.Fatal("Plase provide the operation name")
-			log.Fatal("Usage: ./curly <operation> <filename>")
+			fmt.Println("Plase provide the operation name")
+			fmt.Println("Usage: curly <operation> <filename>")
 			os.Exit(1)
 		}
 	},
 }
 
-var readFile = &cobra.Command{
-	Use:   "read",
-	Short: "Read from the json file",
-	Long: `It's gonna read from the json file and  show the content of the file.
+var runFile = &cobra.Command{
+	Use:   "run",
+	Short: "Run from the json file",
+	Long: `It's gonna run from the json file and  show the content of the file.
           add the file name after the command and run the command on the same directory as the json file is.`,
 	Args: cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) < 1 {
 			log.Fatal("Please provide the file name")
-			log.Fatal("Usage: ./cobra-tut read <filename>")
+			log.Fatal("Usage: ./cobra-tut run <filename>")
 		}
 		Source = args[0]
 
 		val, _ := utils.ReadFile(Source)
 		fmt.Println(val)
-		if Verbose {
-			fmt.Println("Running the read comamnd verbosely...")
-		} else {
-			fmt.Println("Running the read comamnd...")
-		}
 	},
 }
 
@@ -62,7 +61,7 @@ var createFile = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) < 1 {
 			fmt.Println("Please provide the file name")
-			fmt.Println("Usage: ./cobra-tut create <filename>")
+			fmt.Println("Usage: curly create <filename>")
 			os.Exit(1)
 		}
 		ext := strings.Split(args[0], ".")
@@ -77,9 +76,12 @@ var createFile = &cobra.Command{
 }
 
 func Execute() {
-	readFile.Flags().BoolVarP(&Verbose, "verbose", "v", false, "verbose output")
-	rootCmd.AddCommand(readFile)
+	rootCmd.Flags().BoolVarP(&Version, "version", "v", false, "print version")
+	configCmd.Flags().BoolVarP(&Create, "create", "c", false, "create config file")
+	rootCmd.AddCommand(runFile)
 	rootCmd.AddCommand(createFile)
+	rootCmd.AddCommand(configCmd)
+	rootCmd.AddCommand(checkCmd)
 
 	// NOTE: if the root command returns some error then the whole program just go boom.
 	if err := rootCmd.Execute(); err != nil {

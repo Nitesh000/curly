@@ -8,12 +8,13 @@ import (
 	"os"
 )
 
-func (c *RequestConfigurations) NewConfig() *RequestConfigurations {
+func NewConfig() *RequestConfigurations {
 	// NOTE: Read from the configuration file in the ~/.curly/curly.json
 
 	// NOTE: check if the file exists or not
 	if _, err := os.Stat(CONFIGURE_FILE_PATH + "/" + CONFIGURE_FILE_NAME); os.IsNotExist(err) {
 		fmt.Println("File does not exist")
+		fmt.Println("To create this file do curly config -c")
 		os.Exit(1)
 	}
 
