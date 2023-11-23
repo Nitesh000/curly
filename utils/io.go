@@ -26,7 +26,7 @@ func ReadFile(filename string) (types.RequestType, error) {
 	var data types.RequestType
 	err = json.Unmarshal(content, &data)
 	if err != nil {
-		log.Fatalf("Error parsing the file %s", filename)
+		log.Fatalf("Error parsing the file %s: %s", filename, err)
 	}
 
 	defer file.Close()

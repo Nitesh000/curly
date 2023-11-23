@@ -1,6 +1,7 @@
 package types
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"os/exec"
@@ -20,9 +21,8 @@ func (t *RequestType) GetCurlCommand() string {
 	}
 
 	if t.Body != nil {
-		if *t.Body != "" {
-			command += " -d '" + *t.Body + "'"
-		}
+		jsonData, _ := json.Marshal(t.Body)
+		command += " -d '" + string(jsonData) + "'"
 	}
 
 	if t.Verbose {
