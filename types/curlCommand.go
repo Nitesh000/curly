@@ -29,6 +29,8 @@ func (t *RequestType) GetCurlCommand() string {
 		command += " -v"
 	}
 
+	command += AppConfigString
+
 	return command
 }
 

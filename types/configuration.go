@@ -10,15 +10,17 @@ import (
 
 func NewConfig() *RequestConfigurations {
 	// NOTE: Read from the configuration file in the ~/.curly/curly.json
+	var home string
+	home = os.Getenv("HOME")
 
 	// NOTE: check if the file exists or not
-	if _, err := os.Stat(CONFIGURE_FILE_PATH + "/" + CONFIGURE_FILE_NAME); os.IsNotExist(err) {
+	if _, err := os.Stat(home + "/" + CONFIGURE_FILE_PATH + "/" + CONFIGURE_FILE_NAME); os.IsNotExist(err) {
 		fmt.Println("File does not exist")
 		fmt.Println("To create this file do curly config -c")
 		os.Exit(1)
 	}
 
-	file, err := os.Open(CONFIGURE_FILE_PATH + "/" + CONFIGURE_FILE_NAME)
+	file, err := os.Open(home + "/" + CONFIGURE_FILE_PATH + "/" + CONFIGURE_FILE_NAME)
 	if err != nil {
 		return nil
 	}
@@ -217,7 +219,7 @@ func (c *RequestConfigurations) CreateConfigureString() string {
 		configureString += "local_ip6: %{local_ip6}\n"
 	}
 
-	configureString += "'"
+	configureString += "' -o -"
 
 	return configureString
 }

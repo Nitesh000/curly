@@ -2,12 +2,32 @@ package utils
 
 import (
 	"curly/types"
+	"errors"
 	"os"
 )
 
 func CreateConfigureFile() error {
+	// NOTE: finding the path value of bash "HOME" variable
+	home := os.Getenv("HOME")
+	if home == "" {
+		return errors.New("HOME environment variable is not found")
+	}
+
 	// NOTE: create configure file in the ~/.curly/config.json
-	fullPath := types.CONFIGURE_FILE_PATH + "/" + types.CONFIGURE_FILE_NAME
+	fullPath := home + "/" + types.CONFIGURE_FILE_PATH + "/" + types.CONFIGURE_FILE_NAME
+
+	// NOTE: check if the file is already exist then ask the user to update or delete the file.
+	if _, err := os.Stat(fullPath); !os.IsNotExist(err) {
+		return errors.New("The configuration file is already exist.")
+	}
+
+	// NOTE: create a directory first if it is not exist
+	if _, err := os.Stat(home + "/" + types.CONFIGURE_FILE_PATH); os.IsNotExist(err) {
+		err := os.MkdirAll(home+"/"+types.CONFIGURE_FILE_PATH, os.ModePerm)
+		if err != nil {
+			return err
+		}
+	}
 
 	// NOTE: create the file
 	file, err := os.Create(fullPath)
@@ -52,6 +72,10 @@ func CreateConfigureFile() error {
     "primary_ip6": false,
     "local_ip6": false
     }`)
+
+	if err != nil {
+		return errors.New("Error while writing the configuration file")
+	}
 
 	return nil
 }

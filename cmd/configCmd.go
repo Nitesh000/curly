@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"curly/types"
 	"curly/utils"
 	"fmt"
 	"os"
@@ -19,14 +18,9 @@ var configCmd = &cobra.Command{
 		if Create {
 			err := utils.CreateConfigureFile()
 			if err != nil {
-				fmt.Println("Error creating the config file")
+				fmt.Println(err)
 				os.Exit(1)
 			}
 		}
-
-		conf := types.CurlyConfig{
-			AppConfig: types.NewConfig(),
-		}
-		types.AppConfigString = conf.AppConfig.CreateConfigureString()
 	},
 }

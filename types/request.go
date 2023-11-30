@@ -1,14 +1,16 @@
 package types
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 const (
-	CONFIGURE_FILE_PATH = "~/.curly"
+	CONFIGURE_FILE_PATH = ".config/curly/"
 	CONFIGURE_FILE_NAME = "curly.json"
 	VERSION             = "0.0.1"
 )
 
-var AppConfigString string
+var AppConfigString string = ""
 
 type RequestType struct {
 	Method  string            `json:"method"`

@@ -46,10 +46,18 @@ var runFile = &cobra.Command{
 			log.Fatal("Please provide the file name")
 			log.Fatal("Usage: ./cobra-tut run <filename>")
 		}
-		Source = args[0]
 
-		val, _ := utils.ReadFile(Source)
-		fmt.Println(val)
+		// NOTE: add the configuration options from the file
+		conf := types.CurlyConfig{
+			AppConfig: types.NewConfig(),
+		}
+		types.AppConfigString = conf.AppConfig.CreateConfigureString()
+
+		Source = args[0]
+		_, err := utils.ReadFile(Source)
+		if err != nil {
+			fmt.Println(err)
+		}
 	},
 }
 
@@ -76,7 +84,7 @@ var createFile = &cobra.Command{
 }
 
 func Execute() {
-	rootCmd.Flags().BoolVarP(&Version, "version", "v", false, "print version")
+	rootCmd.Flags().BoolVarP(&Version, "version", "V", false, "print version")
 	configCmd.Flags().BoolVarP(&Create, "create", "c", false, "create config file")
 	rootCmd.AddCommand(runFile)
 	rootCmd.AddCommand(createFile)
